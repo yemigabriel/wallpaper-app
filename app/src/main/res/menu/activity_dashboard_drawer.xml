@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_wallpapers"
+            android:icon="@drawable/outline_image_white_24dp"
+            android:title="Recent"/>
+        <item
+            android:id="@+id/nav_explore"
+            android:icon="@drawable/outline_collections_white_24dp"
+            android:title="Categories"/>
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/outline_collections_white_24dp"
+            android:title="My Gallery"/>
+        <item
+            android:id="@+id/nav_daily"
+            android:icon="@drawable/outline_event_white_24dp"
+            android:title="Daily"/>
+        <item
+            android:id="@+id/nav_frequency"
+            android:icon="@drawable/outline_favorite_border_white_24dp"
+            android:title="Favorites"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_profile"-->
+            <!--android:title="Profile"/>-->
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/outline_settings_white_24dp"
+            android:title="Settings"/>
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:title="Share"/>
+            <item
+                android:id="@+id/nav_send"
+                android:title="Help"/>
+            <item
+                android:id="@+id/nav_sensd"
+                android:title="About"/>
+            <!--<item-->
+                <!--android:id="@+id/nav_sesnsd"-->
+                <!--android:icon="@drawable/ic_menu_send"-->
+                <!--android:title="Terms"/>-->
+        </menu>
+    </item>
+
+</menu>

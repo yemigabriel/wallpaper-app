@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="Search"/>
+        <item
+            android:id="@+id/nav_loan"
+            android:title="Messages"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_contribution"-->
+            <!--android:title="Contributions"/>-->
+        <!--<item-->
+            <!--android:id="@+id/nav_bonus"-->
+            <!--android:title="Bonuses"/>-->
+        <!--<item-->
+            <!--android:id="@+id/nav_notification"-->
+            <!--android:title="Notifications"/>-->
+    </group>
+
+    <item android:title="More...">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share"/>
+            <!--<item-->
+                <!--android:id="@+id/nav_help"-->
+                <!--andrimageicon="@drawable/ic_"-->
+                <!--android:title="Help"/>-->
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send Feedback"/>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Settings"/>
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.doxa360.yg.android.wallpaper.LoansActivity"
+    tools:showIn="@layout/activity_loans" 
+    android:background="#fafafa">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginTop="@dimen/activity_vertical_margin"
+                  android:layout_marginBottom="@dimen/activity_vertical_margin"
+                  android:padding="8dp">
+
+
+        <include layout="@layout/loan_card_layout"/>
+
+        <include layout="@layout/pending_card_layout"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
