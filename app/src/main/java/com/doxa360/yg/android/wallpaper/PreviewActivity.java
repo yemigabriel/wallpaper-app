@@ -1,6 +1,7 @@
 package com.doxa360.yg.android.wallpaper;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -23,6 +26,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.doxa360.yg.android.wallpaper.helpers.MyToolBox;
 import com.doxa360.yg.android.wallpaper.model.Wallpaper;
 import com.squareup.picasso.Picasso;
@@ -44,6 +52,10 @@ public class PreviewActivity extends AppCompatActivity {
     private WallpaperManager wallpaperManager;
     private Bitmap mBitmap;
     private Wallpaper mWallpaper;
+    private RequestOptions requestOptions;
+    boolean applyWallpaper;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,32 +71,37 @@ public class PreviewActivity extends AppCompatActivity {
         if (intent != null)
             mWallpaper = intent.getParcelableExtra(WallpaperApp.WALLPAPER);
 
-        wallpaperManager = WallpaperManager.getInstance(this);
-        //TODO: check if it already exist in internal storage
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 8;
 
-        mBitmap = BitmapFactory.decodeResource(getResources(), mWallpaper.getImage(), options); // pass image here
-        //apply image to imageview
+
+        wallpaperManager = WallpaperManager.getInstance(this);
+
         ImageView mPreviewWallpaper = (ImageView) findViewById(R.id.wallpaper_preview);
         TextView mWallpaperLabel = findViewById(R.id.wallpaper_label);
         Button mDownloadBtn = findViewById(R.id.downloadBtn);
         Button mApplyBtn = findViewById(R.id.applyBtn);
 
-//        mPreviewWallpaper.setImageResource(mWallpaper.getImage());
-        Picasso.with(this).load(mWallpaper.getImage()).placeholder(R.drawable.placeholder_demo).into(mPreviewWallpaper);
+
+        requestOptions = new RequestOptions().placeholder(R.drawable.placeholder).centerCrop();
+        Glide.with(this).load(WallpaperApp.PHOTO_URL + mWallpaper.getUrl())
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .apply(requestOptions)
+                            .thumbnail(Glide.with(this)
+                                    .load(WallpaperApp.THUMBNAIL_URL + mWallpaper.getUrl())
+                                    .apply(requestOptions))
+                .into(mPreviewWallpaper);
+//
+//        Picasso.with(this).load(mWallpaper.getImage()).placeholder(R.drawable.placeholder_demo).into(mPreviewWallpaper);
         mWallpaperLabel.setText(mWallpaper.getTitle());
         mDownloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                downloadToDevice();
-                checkPermissions();
+                checkPermissions(false);
             }
         });
         mApplyBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setPhoneWallpaper(mBitmap);
+                checkPermissions(true);
             }
         });
 
@@ -92,55 +109,69 @@ public class PreviewActivity extends AppCompatActivity {
 
     }
 
-    private void checkPermissions() {
+    private void bitmapFromRemoteUrl(final boolean applyWallpaper) {
+        mProgressDialog.setMessage("Downloading wallpaper ...");
+        mProgressDialog.show();
+        Glide.with(this)
+                .asBitmap()
+                .load(WallpaperApp.PHOTO_URL + mWallpaper.getUrl())
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        downloadToDevice(resource, applyWallpaper);
+                    }
+                });
+    }
+
+
+    private void checkPermissions(boolean applyWallpaper) {
+        mProgressDialog = new ProgressDialog(this);
+
+        this.applyWallpaper = applyWallpaper;
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             boolean hasStoragePermission = (ContextCompat.checkSelfPermission
                     (this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
 
             if (hasStoragePermission) {
-                downloadToDevice();
+                bitmapFromRemoteUrl(applyWallpaper);
             }else {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(PreviewActivity.this,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
                 } else {
                     // No explanation needed; request the permission
                     ActivityCompat.requestPermissions(PreviewActivity.this,
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-                    // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                    // app-defined int constant. The callback method gets the
-                    // result of the request.
                 }
             }
         } else {
-            downloadToDevice();
+            bitmapFromRemoteUrl(applyWallpaper);
         }
     }
 
-    private void downloadToDevice() {
+    private void downloadToDevice(Bitmap bitmap, boolean applyWallpaper) {
         if (MyToolBox.isExternalStorageAvailable()) {
             Date now = new Date();
             String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(now);
             String fileName = "/IMG_"+timestamp;
 
 
-            File fileDir = new File(Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES) + "/Wallpaper_Demo");//this.getString(R.string.app_name));
+//            Environment.getExternalStoragePublicDirectory(
+//                    Environment.DIRECTORY_PICTURES)
+            File fileDir = new File( getExternalFilesDir(Environment.DIRECTORY_PICTURES)+ "/DarlingWallpaper");//this.getString(R.string.app_name));
             if (!fileDir.exists()) {
                 fileDir.mkdirs();
             }
                 if (fileDir.canWrite()) {
-                    Toast.makeText(PreviewActivity.this, "downloading...", Toast.LENGTH_SHORT).show();
+                mProgressDialog.setMessage("Almost done ...");
+//                    Toast.makeText(PreviewActivity.this, "downloading...", Toast.LENGTH_SHORT).show();
 //                File filesDir = this.getFilesDir(); //internal_storage
                     File imageFile = new File(fileDir + fileName + ".jpg");
                     if (!imageFile.exists()) {
                         try {
                             imageFile.createNewFile();
-                            Toast.makeText(PreviewActivity.this, "just a second...", Toast.LENGTH_SHORT).show();
+                            mProgressDialog.setMessage("Wrapping up ...");
+//                            Toast.makeText(PreviewActivity.this, "just a second...", Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -148,68 +179,89 @@ public class PreviewActivity extends AppCompatActivity {
                     OutputStream os;
                     try {
                         os = new FileOutputStream(imageFile);
-                        mBitmap.compress(Bitmap.CompressFormat.JPEG, 80, os);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, os);
                         os.flush();
                         os.close();
-                        Toast.makeText(this, "Wallpaper successfully downloaded to " + imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                        if (applyWallpaper){
+                            mProgressDialog.setMessage("Applying wallpaper");
+                            applyDeviceWallpaper(imageFile);
+                        } else {
+                            mProgressDialog.cancel();
+                            Toast.makeText(this, "Wallpaper successfully downloaded to " + imageFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                        }
                     } catch (Exception e) {
                         Log.e(TAG, "Error writing mBitmap", e);
+                        mProgressDialog.cancel();
                         Toast.makeText(this, "Wallpaper not successfully downloaded", Toast.LENGTH_LONG).show();
                     }
                 }
                 else {
+                    mProgressDialog.cancel();
                     Toast.makeText(PreviewActivity.this, "An error occurred while attempting to download the wallpaper", Toast.LENGTH_LONG).show();
                 }
 
 
+        } else {
+            mProgressDialog.cancel();
+            Toast.makeText(this, "No storage available for this wallpaper", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void setPhoneWallpaper(Bitmap bm) {
-//        Toast.makeText(this, "applying wallpaper", Toast.LENGTH_SHORT).show();
-//        Bitmap bm= BitmapFactory.decodeResource(getResources(),R.drawable.appbg);
-        Date now = new Date();
-        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(now);
-
-        String fileName = "IMG_"+timestamp;
-
+    private void applyDeviceWallpaper(File imageFile) {
         Uri uri = FileProvider.getUriForFile(this,
-                BuildConfig.APPLICATION_ID + ".provider" ,getFileFromBitmap(bm, fileName));
+                BuildConfig.APPLICATION_ID + ".provider" ,imageFile);
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            Intent i = wallpaperManager.getCropAndSetWallpaperIntent(uri);
-            startActivityForResult(i, SET_WALLPAPER_REQUEST);
-        }
-        else {
-            try {
-                wallpaperManager.setBitmap(mBitmap);
-                Toast.makeText(this, "Wallpaper successfully applied", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Wallpaper not applied", Toast.LENGTH_LONG).show();
-            }
-        }
+        Intent i = wallpaperManager.getCropAndSetWallpaperIntent(uri);
+        startActivityForResult(i, SET_WALLPAPER_REQUEST);
+        mProgressDialog.dismiss();
 
-
-
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+//        }
     }
 
-    private File getFileFromBitmap(Bitmap bitmap, String name) {
-        File filesDir = this.getFilesDir(); //internal_storage
-        File imageFile = new File(filesDir, name + ".jpg");
-
-        OutputStream os;
-        try {
-            os = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, os);
-            os.flush();
-            os.close();
-        } catch (Exception e) {
-            Log.e(TAG, "Error writing mBitmap", e);
-        }
-
-        return imageFile;
-    }
+//    private void setPhoneWallpaper() {
+//        Date now = new Date();
+//        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(now);
+//
+//        String fileName = "IMG_"+timestamp;
+//
+//        Uri uri = FileProvider.getUriForFile(this,
+//                BuildConfig.APPLICATION_ID + ".provider" ,getFileFromBitmap(bm, fileName));
+//
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+//            Intent i = wallpaperManager.getCropAndSetWallpaperIntent(uri);
+//            startActivityForResult(i, SET_WALLPAPER_REQUEST);
+//        }
+//        else {
+//            try {
+//                wallpaperManager.setBitmap(mBitmap);
+//                Toast.makeText(this, "Wallpaper successfully applied", Toast.LENGTH_LONG).show();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//                Toast.makeText(this, "Wallpaper not applied", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//
+//
+//    }
+//
+//    private File getFileFromBitmap(Bitmap bitmap, String name) {
+//        File filesDir = this.getFilesDir(); //internal_storage
+//        File imageFile = new File(filesDir, name + ".jpg");
+//
+//        OutputStream os;
+//        try {
+//            os = new FileOutputStream(imageFile);
+//            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, os);
+//            os.flush();
+//            os.close();
+//        } catch (Exception e) {
+//            Log.e(TAG, "Error writing mBitmap", e);
+//        }
+//
+//        return imageFile;
+//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -249,7 +301,7 @@ public class PreviewActivity extends AppCompatActivity {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    downloadToDevice();
+                    bitmapFromRemoteUrl(PreviewActivity.this.applyWallpaper);
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
