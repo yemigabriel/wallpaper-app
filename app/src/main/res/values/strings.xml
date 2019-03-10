@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wallpaper Demo</string>
+    <string name="app_name">Darling</string>
     <string name="action_settings">Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -113,9 +113,31 @@
     <string name="action_sort">Sort</string>
     <string name="demo_message">The requested feature is denied on this demo app. Kindly contact the developer for more info.</string>
 
+    <string name="get_started">Get started</string>
+
     <string-array name="sort_by">
         <item>Sort By: Latest</item>
         <item>Sort By: Popularity</item>
     </string-array>
+
+    <string-array name="frequency_options">
+        <item>1 min</item>
+        <item>15 min</item>
+        <item>1 hour</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>Daily</item>
+        <item>Weekly</item>
+        <!--<item>Neptune</item>-->
+    </string-array>
+
+
+    <string name="title_activity_category_detail">Category</string>
+    <string name="title_activity_album_detail">Album</string>
+    <string name="action_delete">Delete</string>
+    <string name="title_activity_onboarding">Onboarding</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_account">Account</string>
+    <string name="tutorial_welcome">Welcome! Tap on any wallpaper you like to download or apply them to your device</string>
 
 </resources>

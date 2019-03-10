@@ -3,11 +3,11 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.doxa360.yg.android.wallpaper"
-        minSdkVersion 19
+        applicationId "com.doxa360.yg.android.darling"
+        minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 7
+        versionName "0.020"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -37,5 +37,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 
     implementation 'com.github.bumptech.glide:glide:4.8.0'
+    implementation 'com.android.support:support-v13:27.1.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
+    implementation 'com.thinkincode.utils:Android:0.0.3'
+    implementation 'com.ramotion.paperonboarding:paper-onboarding:1.1.1'
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.2.0@aar'
 }

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".AddPhotoToAlbumBottomSheetFragment"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_photo"
+        android:layout_marginTop="8dp"
+        android:text="Tap to add photo(s) +"
+        android:textColor="#FFFFFF"  android:padding="8dp"
+        android:background="@drawable/chips"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:clickable="true" />
+
+    <com.thinkincode.utils.views.HorizontalFlowLayout
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/horizontal_flow_layout">
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="hellopo"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:padding="4dp"-->
+            <!--android:background="@drawable/chips"  />-->
+
+        <!--<FrameLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<ImageView-->
+                <!--android:layout_width="64dp"-->
+                <!--android:layout_height="64dp"-->
+                <!--tools:src="@drawable/app_logo" />-->
+            <!--<ImageView-->
+                <!--android:layout_width="18dp"-->
+                <!--android:layout_height="18dp"-->
+                <!--android:src="@drawable/ic_close_white_36dp"-->
+                <!--android:tint="@color/accent"-->
+                <!--android:background="@drawable/onboarding_pager_round_icon" />-->
+        <!--</FrameLayout>-->
+
+
+    </com.thinkincode.utils.views.HorizontalFlowLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/add_album_button"
+        android:layout_marginTop="16dp"
+        android:text="Finish"
+        style="@style/Base.Widget.AppCompat.Button.Colored"  />
+
+
+</LinearLayout>

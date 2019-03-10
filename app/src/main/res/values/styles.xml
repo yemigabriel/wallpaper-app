@@ -26,6 +26,10 @@
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
+    <style name="AppTheme.NoActionBar.Launcher">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
     <!--<item name="android:fontFamily">@font/lobster</item>-->
     <style name="customfontstyle" parent="@android:style/TextAppearance">
         <item name="android:fontFamily">@font/raleway</item>

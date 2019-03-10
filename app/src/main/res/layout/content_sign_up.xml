@@ -12,7 +12,7 @@
     android:paddingStart="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.doxa360.yg.android.wallpaper.SignUpActivity"
+    tools:context="com.doxa360.yg.android.darling.SignUpActivity"
     tools:showIn="@layout/activity_sign_up">
 
     <android.support.constraint.ConstraintLayout

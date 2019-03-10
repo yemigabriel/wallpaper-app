@@ -5,7 +5,7 @@
             android:id="@+id/constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.doxa360.yg.android.wallpaper.PreviewFragment">
+            tools:context="com.doxa360.yg.android.darling.PreviewFragment">
     <ImageView
         android:id="@+id/background_blur"
         android:layout_width="match_parent"

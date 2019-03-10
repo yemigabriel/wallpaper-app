@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RetrieveFragment"
+    android:padding="@dimen/activity_horizontal_margin"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/progress_icon"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/outline_cloud_upload_white_retrieve"
+            android:tint="@color/accent"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retrieving Albums ... "
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            style="@style/navstyle"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:indeterminate="true" />
+
+
+        <TextView
+            android:id="@+id/progress_secondary_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textStyle="italic|bold"
+            android:text="syncing albums... please hold..."/>
+
+    </LinearLayout>
+
+</FrameLayout>

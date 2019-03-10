@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" android:padding="8dp">
+
+    <com.doxa360.yg.android.darling.helpers.SquarePhotos
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/photo"
+        tools:src="@drawable/appbg"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:background="#aaaaaa"/>
+
+    <!--<RadioButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/radio_button"-->
+        <!--android:layout_gravity="start|top"-->
+        <!--android:layout_margin="8dp"-->
+        <!--android:background="#80FFFFFF"-->
+        <!--android:textStyle="bold" />-->
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        tools:text="Album"
+        android:textAlignment="center"
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:textStyle="bold"
+        android:layout_gravity="bottom" android:background="#80ffffff" />
+
+    <!--android:background="#80000000"-->
+    <!--android:textColor="@android:color/white"-->
+
+
+</FrameLayout>

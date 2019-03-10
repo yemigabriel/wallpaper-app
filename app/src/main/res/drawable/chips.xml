@@ -7,6 +7,6 @@
     <stroke android:color="@color/secondary_text"
             android:width="0dp"/>
 
-    <solid android:color="#80FFFFFF"/>
+    <solid android:color="@color/accent"/>
 
 </shape>

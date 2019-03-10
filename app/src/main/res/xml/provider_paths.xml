@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<paths xmlns:android="http://schemas.android.com/apk/res/android">-->
-    <!--&lt;!&ndash;<external-path name="external_files" path="."/>&ndash;&gt;-->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <external-path name="external_files" path="."/>
     <!--<files-path name="files" path="." />-->
-<!--</paths>-->
-<paths>
-    <external-path name="DarlingWallpaper" path="Android/data/com.doxa360.yg.android.wallpaper/files/Pictures/InstructiveRide/"/>
 </paths>
+<!--<paths>-->
+    <!--<external-path name="DarlingWallpaper" path="Android/data/com.doxa360.yg.android.wallpaper/files/Pictures/InstructiveRide/"/>-->
+<!--</paths>-->

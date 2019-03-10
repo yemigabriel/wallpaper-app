@@ -13,7 +13,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <com.doxa360.yg.android.wallpaper.helpers.MLRoundedImageView
+    <com.doxa360.yg.android.darling.helpers.MLRoundedImageView
         android:id="@+id/imageView"
         android:layout_width="50dp"
         android:layout_height="50dp"

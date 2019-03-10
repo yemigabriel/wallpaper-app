@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    android:layout_margin="2dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <com.doxa360.yg.android.darling.helpers.SquarePhotos
+        android:id="@+id/wallpaper_imageview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@android:color/darker_gray"
+        android:adjustViewBounds="true"/>
+
+    <TextView
+    android:id="@+id/titleTextView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:text="Category"
+    android:textAlignment="center"
+    style="@style/Base.TextAppearance.AppCompat.Small"
+    android:background="#80000000"
+    android:textColor="@android:color/white"
+    android:textStyle="bold" android:layout_gravity="bottom"/>
+
+</android.support.v7.widget.CardView>
